@@ -21,7 +21,7 @@
 
             <Style x:Key="FlatButtonStyle" TargetType="Button">
                 <Setter Property="OverridesDefaultStyle" Value="True"/>
-                <Setter Property="Background" Value="#FFEEEEEE" />
+                <Setter Property="Background" Value="{x:Null}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -30,7 +30,7 @@
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="White"/>
+									<Setter Property="Background" Value="{StaticResource AccentColorBrush}"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -38,34 +38,7 @@
                 </Setter>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="White" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="MetroButtonStyle" TargetType="Button">
-                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                <Setter Property="Background" Value="White" />
-                <Setter Property="BorderBrush" Value="#d9d9d9ff" />
-                <Setter Property="FontSize" Value="14px"/>
-                <Setter Property="FontFamily" Value="Arial"/>
-                <Setter Property="Padding" Value="5"/>
-                <Setter Property="Margin" Value="0" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}"  BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}">
-                                <TextBlock VerticalAlignment="Stretch" HorizontalAlignment="Stretch" TextAlignment="Center" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </TextBlock>
-                            </Border>
-
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="BorderBrush" Value="Black" />
+						<Setter Property="Background" Value="{StaticResource AccentColorBrush}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -96,6 +69,31 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+
+			<Style x:Key="NeoInfoBar" TargetType="Border">
+				<Setter Property="OverridesDefaultStyle" Value="False"/>
+				<Setter Property="Opacity" Value="0"/>
+				<Style.Triggers>
+					<Trigger Property="IsEnabled" Value="true">
+						<Trigger.EnterActions>
+							<BeginStoryboard>
+								<Storyboard>
+									<DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="100" Duration="0:0:0.7" />
+									<DoubleAnimation Storyboard.TargetProperty="Height" From="0" To="30" Duration="0:0:0.5"/>
+								</Storyboard>
+							</BeginStoryboard>
+						</Trigger.EnterActions>
+						<Trigger.ExitActions>
+							<BeginStoryboard>
+								<Storyboard>
+									<DoubleAnimation Storyboard.TargetProperty="Opacity" From="100" To="0" Duration="0:0:0.7" />
+									<DoubleAnimation Storyboard.TargetProperty="Height" From="30" To="0" Duration="0:0:0.5"/>
+								</Storyboard>
+							</BeginStoryboard>
+						</Trigger.ExitActions>
+					</Trigger>
+				</Style.Triggers>
+	 		</Style>
 
         </ResourceDictionary>
         

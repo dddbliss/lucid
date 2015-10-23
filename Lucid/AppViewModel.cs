@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Lucid.ViewModels;
 using NPLib;
+using NPLib.Events;
 using NPLib.Models;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Lucid
 
         private ImageSource _shopperImageSource = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/next_25px.png"));
         private User _currentUser = new User() { is_authenticated = false };
-        private bool _shopperIsActive = false;
+        private bool _shopperIsActive = false, IsBusyCheckingShop = false;
 
         private ObservableCollection<MainShopItem> ShopStockList { get; set; }
 
@@ -116,6 +117,17 @@ namespace Lucid
             {
                 LogViewModel.Add(message);
             }));
+
+			_cm.RegisterEventHandler(new Action<Event>((ev) =>
+			{
+				if (ev.GetType().Equals(typeof(CurrencyEvent)))
+				{
+					var currencySet = (CurrencySet)ev.Object;
+					CurrentUser.NP = currencySet.NP;
+					CurrentUser.NC = currencySet.NC;
+					NotifyOfPropertyChange(() => CurrentUser);
+				}
+			}));
         }
 
         public AppViewModel()
@@ -134,12 +146,13 @@ namespace Lucid
         public void ManageShopper()
         {
 
-            if (!ShopperIsActive)
+			ToggleShopperState();
+            if (ShopperIsActive)
                 LogViewModel.Add("Beginning to shop.");
             else
                 LogViewModel.Add("All done shopping.");
 
-            ToggleShopperState();
+            
 
             Task t = Task.Run(() =>
             {
@@ -185,15 +198,17 @@ namespace Lucid
                                         }
                                         else
                                         {
-                                            if (ShopStockList == null)
-                                                _msm.GetItemsInShop(Properties.Settings.Default.MS_ShopID, new Action<List<MainShopItem>>((item_list) =>
-                                                {
-                                                    ShopStockList = new ObservableCollection<MainShopItem>(item_list);
-                                                    NotifyOfPropertyChange(() => ShopStockList);
-                                                }));
-                                            else
-                                                LogViewModel.Add("Not null..");
-                                            
+											if (!IsBusyCheckingShop)
+											{
+												IsBusyCheckingShop = true;
+												_msm.GetItemsInShop(Properties.Settings.Default.MS_ShopID, new Action<List<MainShopItem>>((item_list) =>
+												{
+													ShopStockList = new ObservableCollection<MainShopItem>(item_list);
+													NotifyOfPropertyChange(() => ShopStockList);
+
+													IsBusyCheckingShop = false;
+												}));
+											}
                                         }
 
                                     }

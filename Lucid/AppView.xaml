@@ -21,18 +21,11 @@
             <RowDefinition Height="26"/>
         </Grid.RowDefinitions>
 
-        <Border BorderBrush="Black" BorderThickness="0" Background="#FFEEEEEE">
+		<Border BorderBrush="Black" BorderThickness="0" Background="{StaticResource AccentColorBrush}">
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Stretch">
                     <Image x:Name="image" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Source="pack://siteoforigin:,,,/Resources/shopping_basket_96px.png"/>
-                    <Label x:Name="label" VerticalAlignment="Center" Content="Lucid" FontSize="16">
-                        <Label.Foreground>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FF212121" Offset="0"/>
-                                <GradientStop Color="#FF464646" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Label.Foreground>
-                    </Label>
+					<Label x:Name="label" VerticalAlignment="Center" Content="Lucid" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button x:Name="ManageShopper" HorizontalAlignment="Right" Style="{StaticResource FlatButtonStyle}">
@@ -75,7 +68,7 @@
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=LogViewModel.LastMessage, UpdateSourceTrigger=PropertyChanged}" Foreground="White"></TextBlock>
             </StackPanel>
         </Border>
-        <Border BorderBrush="Black" BorderThickness="0" Height="30" Grid.Row="1" VerticalAlignment="Top" Background="#FFFBFBFB">
+        <Border BorderBrush="Black" BorderThickness="0" Height="30" Grid.Row="1" VerticalAlignment="Top" Background="#FFFFD026" IsEnabled="{Binding Path=CurrentUser.is_authenticated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource NeoInfoBar}">
             <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <Label DockPanel.Dock="Left" Content="{Binding Path=CurrentUser.username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <Label.Foreground>
@@ -91,7 +84,7 @@
             </DockPanel>
         </Border>
         <DockPanel Grid.Row="2" LastChildFill="True" MaxHeight="240">
-            <ListBox x:Name="ShopStockList">
+            <ListBox x:Name="ShopStockList" ItemsSource="{Binding ShopStockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel HorizontalAlignment="Stretch">
