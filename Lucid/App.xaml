@@ -16,6 +16,7 @@
                 <ResourceDictionary>
                     <local:AppBootstrapper x:Key="bootstrapper" />
                     <properties:Settings x:Key="Settings" />
+                    <local:ImgConverter x:Key="imgConverter" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 

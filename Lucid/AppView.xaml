@@ -11,12 +11,9 @@
         GlowBrush="{DynamicResource AccentColorBrush}"
         Title="{Binding WindowTitle}" Height="375.379" Width="630.405">
 
-
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48"/>
-            <RowDefinition/>
             <RowDefinition Height="8*"/>
             <RowDefinition Height="26"/>
         </Grid.RowDefinitions>
@@ -36,7 +33,7 @@
                         </Grid>
                     </Button>
                     <Button HorizontalAlignment="Right" Style="{StaticResource FlatButtonStyle}">
-                        <Image Source="pack://siteoforigin:,,,/Resources/ingredients_list_25px.png" Margin="10" Width="25" Height="25"></Image>
+                        <Image Source="pack://siteoforigin:,,,/Resources/ingredients_list_32px.png" Margin="10" Width="25" Height="25"></Image>
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -47,7 +44,7 @@
                         </i:Interaction.Triggers>
                     </Button>
                     <Button HorizontalAlignment="Right" Style="{StaticResource FlatButtonStyle}">
-                        <Image Source="pack://siteoforigin:,,,/Resources/settings_25px.png" Margin="10" Width="25" Height="25"></Image>
+                        <Image Source="pack://siteoforigin:,,,/Resources/settings_32px.png" Margin="10" Width="25" Height="25"></Image>
 
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -68,33 +65,60 @@
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=LogViewModel.LastMessage, UpdateSourceTrigger=PropertyChanged}" Foreground="White"></TextBlock>
             </StackPanel>
         </Border>
-        <Border BorderBrush="Black" BorderThickness="0" Height="30" Grid.Row="1" VerticalAlignment="Top" Background="#FFFFD026" IsEnabled="{Binding Path=CurrentUser.is_authenticated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource NeoInfoBar}">
+        
+        <DockPanel LastChildFill="True" Grid.Row="1">
+            <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0" Height="30" Grid.Row="1" VerticalAlignment="Top" Background="#FF4290B2" IsEnabled="{Binding Path=CurrentUser.is_authenticated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource NeoInfoBar}">
             <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                <Label DockPanel.Dock="Left" Content="{Binding Path=CurrentUser.username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <Label.Foreground>
-                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
-                    </Label.Foreground>
-                </Label>
-                <Label DockPanel.Dock="Right" Content="{Binding Path=CurrentUser.DisplayNP, UpdateSourceTrigger=PropertyChanged}">
-                    <Label.Foreground>
-                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
-                    </Label.Foreground>
-                </Label>
-                <Label></Label>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="2">
+                        <Image Source="pack://siteoforigin:,,,/Resources/user_26px.png" Margin="3"></Image>
+                        <Label Content="{Binding Path=CurrentUser.username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <Label.Foreground>
+                                <SolidColorBrush Color="White"/>
+                            </Label.Foreground>
+                        </Label>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="2">
+                        <Label Content="{Binding Path=CurrentUser.DisplayNP, UpdateSourceTrigger=PropertyChanged}">
+                        <Label.Foreground>
+                            <SolidColorBrush Color="White"/>
+                        </Label.Foreground>
+                    </Label>
+                    <Image Source="pack://siteoforigin:,,,/Resources/coin_26px.png" Margin="3"></Image>
+                 </StackPanel>
+                 <Grid></Grid>
             </DockPanel>
         </Border>
-        <DockPanel Grid.Row="2" LastChildFill="True" MaxHeight="240">
-            <ListBox x:Name="ShopStockList" ItemsSource="{Binding ShopStockList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel HorizontalAlignment="Stretch">
-                            <Label DockPanel.Dock="Left" Content="{Binding Name}"></Label>
-                            <Label DockPanel.Dock="Right" Content="{Binding Cost}"></Label>
-                        </DockPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+        <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
+            <DataGrid VerticalScrollBarVisibility="Auto" ItemsSource="{Binding ShopStockList, Mode=TwoWay}" AutoGenerateColumns="False" HeadersVisibility="None" IsReadOnly="True" RowBackground="White" GridLinesVisibility="Horizontal">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Items" Width="*" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="False">
+                                        <Border Margin="5" DockPanel.Dock="Left" Width="48" Height="48" BorderBrush="White" BorderThickness="0,0,0,0">
+                                            <Image DockPanel.Dock="Left" Source="{Binding Path=Image, Converter={StaticResource imgConverter}, IsAsync=True}" Height="48" Width="48"/>
+                                        </Border>
+                                        <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="5">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Label VerticalAlignment="Center" Content="{Binding DisplayCost}"/>
+                                                <Image Margin="3" Source="pack://siteoforigin:,,,/Resources/coin_orange_26px.png" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Label Content="{Binding DisplayInStock}" Foreground="#FF777777"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" Margin="5">
+                                            <Label Content="{Binding Name}" VerticalAlignment="Center" FontSize="24px" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
         </DockPanel>
+        
         
 
 

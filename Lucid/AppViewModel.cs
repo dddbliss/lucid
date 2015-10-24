@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,11 +24,38 @@ namespace Lucid
         private string _windowTitle = WindowTitleDefault;
 
 
-        private ImageSource _shopperImageSource = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/next_25px.png"));
+        private ImageSource _shopperImageSource = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/play_round_32px.png"));
         private User _currentUser = new User() { is_authenticated = false };
         private bool _shopperIsActive = false, IsBusyCheckingShop = false;
 
-        private ObservableCollection<MainShopItem> ShopStockList { get; set; }
+        private ObservableCollection<MainShopItem> _ShopStockList = new ObservableCollection<MainShopItem>()
+        {
+            {new MainShopItem()
+            {
+                Name = "Item 1",
+                Cost = 320,
+                InStock = 20
+            } },
+            { new MainShopItem()
+            {
+                Name = "Item 2",
+                Cost = 320,
+                InStock = 20
+            } }
+        };
+
+        public ObservableCollection<MainShopItem> ShopStockList
+        {
+            get
+            {
+                return _ShopStockList;
+            }
+            set
+            {
+                _ShopStockList = value;
+                NotifyOfPropertyChange(() => ShopStockList);
+            }
+        }
 
         public LogViewModel LogViewModel { get; set; }
         public SettingViewModel SettingsViewModel { get; set; }
@@ -89,11 +117,11 @@ namespace Lucid
 
                 if (!value)
                 {
-                    ManageShopperImage = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/close_window_25px.png"));
+                    ManageShopperImage = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/play_round_32px.png"));
                 }
                 else
                 {
-                    ManageShopperImage = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/next_25px.png"));
+                    ManageShopperImage = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/cancel_32px.png"));
                 }
 
                 NotifyOfPropertyChange(() => ShopperIsActive);
@@ -176,7 +204,6 @@ namespace Lucid
                                 {
                                     CurrentUser = _um.CurrentUser;
                                     LogViewModel.Add("Sucessfully completed log in into Neopets.");
-                                    Task.Delay(5000).Wait();
 
                                     if (SettingsViewModel.ItemList.Count <= 0)
                                     {
@@ -203,8 +230,11 @@ namespace Lucid
 												IsBusyCheckingShop = true;
 												_msm.GetItemsInShop(Properties.Settings.Default.MS_ShopID, new Action<List<MainShopItem>>((item_list) =>
 												{
-													ShopStockList = new ObservableCollection<MainShopItem>(item_list);
-													NotifyOfPropertyChange(() => ShopStockList);
+                                                    Execute.OnUIThread(new System.Action(() =>
+                                                    {
+                                                        ShopStockList = new ObservableCollection<MainShopItem>(item_list);
+                                                    }));
+													
 
 													IsBusyCheckingShop = false;
 												}));
