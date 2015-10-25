@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,26 @@ namespace Lucid.Views
             if (this.DataContext != null)
             { ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password; }
         }
-    
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(this.DataContext != null)
+            {
+                txtPassword.Password = Properties.Settings.Default.Login_Password;
+                txtProxyPassword.Password = Properties.Settings.Default.Web_ProxyPassword;
+            }
+        }
+
+        private void txtProxyPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+            { ((dynamic)this.DataContext).ProxyPassword = ((PasswordBox)sender).Password; }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+           
+        }
     }
 }

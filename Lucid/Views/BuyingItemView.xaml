@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Lucid.Views.BuyingItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Lucid.Views"
+             xmlns:vm="clr-namespace:Lucid.ViewModels"
+             mc:Ignorable="d" d:DataContext="{x:Type vm:BuyingItemViewModel}"
+             d:DesignHeight="52" d:DesignWidth="300">
+    <Grid Background="{DynamicResource AccentColorBrush3}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="52"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Image Margin="10" Grid.Column="0" Source="{Binding Image, Converter={StaticResource imgConverter}, IsAsync=True}"></Image>
+
+        <DockPanel Grid.Column="1" LastChildFill="True" HorizontalAlignment="Stretch">
+            
+            <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Margin="2">
+                <Label Foreground="{DynamicResource IdealForegroundColorBrush}" Content="Currently attempting to purchase..."/>
+                <Label Foreground="{DynamicResource IdealForegroundColorBrush}" Margin="0,-12,0,0" Content="{Binding Name}" FontSize="18.667"></Label>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="2">
+                <Label VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="{DynamicResource IdealForegroundColorBrush}" Content="{Binding DisplayCost}"></Label>
+                <Image Height="20" Width="20" VerticalAlignment="Stretch" Source="pack://siteoforigin:,,,/Resources/spinner_26px.png" Style="{DynamicResource Spinner}"></Image>
+            </StackPanel>
+
+        </DockPanel>
+
+    </Grid>
+</UserControl>

@@ -8,29 +8,30 @@
         xmlns:local="clr-namespace:Lucid"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:Views="clr-namespace:Lucid.Views" x:Class="Lucid.AppView"
-        GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="{Binding WindowTitle}" Height="375.379" Width="630.405">
+        GlowBrush="{DynamicResource AccentColorBrush}" 
+        Title="{Binding WindowTitle}" Height="375.379" Width="630.405" TitleCaps="False" Style="{DynamicResource CleanWindowStyleKey}">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
-            <RowDefinition Height="8*"/>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*"/>
             <RowDefinition Height="26"/>
         </Grid.RowDefinitions>
 
-		<Border BorderBrush="Black" BorderThickness="0" Background="{StaticResource AccentColorBrush}">
+        <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0" Background="{DynamicResource AccentColorBrush}">
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Stretch">
                     <Image x:Name="image" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Source="pack://siteoforigin:,,,/Resources/shopping_basket_96px.png"/>
-					<Label x:Name="label" VerticalAlignment="Center" Content="Lucid" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" />
+                    <Label x:Name="label" VerticalAlignment="Center" Content="Lucid" FontSize="16" Foreground="{DynamicResource IdealForegroundColorBrush}" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button x:Name="ManageShopper" HorizontalAlignment="Right" Style="{StaticResource FlatButtonStyle}">
-                        <Grid Margin="10" Width="25" Height="25">
-                            <Grid.Background>
-                                <ImageBrush ImageSource="{Binding ManageShopperImage, UpdateSourceTrigger=PropertyChanged}" />
-                            </Grid.Background>
-                        </Grid>
+                    <Button HorizontalAlignment="Right" Padding="10" Width="45" Style="{StaticResource FlatButtonStyle}">
+                        <Image Source="{Binding ManageShopperImage, UpdateSourceTrigger=PropertyChanged}" Margin="10" Width="25" Height="25"></Image>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <cal:ActionMessage MethodName="ManageShopper" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </Button>
                     <Button HorizontalAlignment="Right" Style="{StaticResource FlatButtonStyle}">
                         <Image Source="pack://siteoforigin:,,,/Resources/ingredients_list_32px.png" Margin="10" Width="25" Height="25"></Image>
@@ -59,56 +60,64 @@
 
 
         </Border>
-        <Border BorderThickness="0" Grid.Row="3" Background="#FF4BABFB">
-            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Horizontal">
-                <Image HorizontalAlignment="Left" Margin="3" IsEnabled="{Binding Path=ShopperIsActive, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Source="pack://siteoforigin:,,,/Resources/spinner_26px.png" Style="{StaticResource Spinner}"/>
-                <TextBlock VerticalAlignment="Center" Text="{Binding Path=LogViewModel.LastMessage, UpdateSourceTrigger=PropertyChanged}" Foreground="White"></TextBlock>
-            </StackPanel>
+
+        <Border BorderThickness="0" Grid.Row="3" Background="{DynamicResource AccentColorBrush}">
+            <DockPanel LastChildFill="True">
+                <Button DockPanel.Dock="Right" Style="{DynamicResource FlatButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Margin="3">
+                        <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource IdealForegroundColorBrush}" Text="Log Viewer" Margin="0,0,5,0"></TextBlock>
+                        <Image Source="pack://siteoforigin:,,,/Resources/log_25px.png"></Image>
+                    </StackPanel>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <cal:ActionMessage MethodName="OpenLog" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Horizontal">
+                    <Image HorizontalAlignment="Left" Margin="3" IsEnabled="{Binding Path=ShopperIsActive, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Source="pack://siteoforigin:,,,/Resources/spinner_26px.png" Style="{StaticResource Spinner}"/>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding Path=LogViewModel.LastMessage.Message, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource IdealForegroundColorBrush}"></TextBlock>
+                </StackPanel>
+            </DockPanel>
+            
         </Border>
         
         <DockPanel LastChildFill="True" Grid.Row="1">
-            <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0" Height="30" Grid.Row="1" VerticalAlignment="Top" Background="#FF4290B2" IsEnabled="{Binding Path=CurrentUser.is_authenticated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource NeoInfoBar}">
-            <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <Border DockPanel.Dock="Top" BorderThickness="0" Height="30" Grid.Row="1" VerticalAlignment="Top" IsEnabled="{Binding Path=CurrentUser.is_authenticated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource NeoInfoBar}" Background="{DynamicResource AccentColorBrush2}">
+                <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="2">
                         <Image Source="pack://siteoforigin:,,,/Resources/user_26px.png" Margin="3"></Image>
-                        <Label Content="{Binding Path=CurrentUser.username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <Label.Foreground>
-                                <SolidColorBrush Color="White"/>
-                            </Label.Foreground>
-                        </Label>
+                        <Label Content="{Binding Path=CurrentUser.username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="2">
-                        <Label Content="{Binding Path=CurrentUser.DisplayNP, UpdateSourceTrigger=PropertyChanged}">
-                        <Label.Foreground>
-                            <SolidColorBrush Color="White"/>
-                        </Label.Foreground>
-                    </Label>
-                    <Image Source="pack://siteoforigin:,,,/Resources/coin_26px.png" Margin="3"></Image>
-                 </StackPanel>
-                 <Grid></Grid>
-            </DockPanel>
-        </Border>
-        <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
-            <DataGrid VerticalScrollBarVisibility="Auto" ItemsSource="{Binding ShopStockList, Mode=TwoWay}" AutoGenerateColumns="False" HeadersVisibility="None" IsReadOnly="True" RowBackground="White" GridLinesVisibility="Horizontal">
+                        <Label Content="{Binding Path=CurrentUser.DisplayNP, UpdateSourceTrigger=PropertyChanged}" Foreground="{DynamicResource IdealForegroundColorBrush}"/>
+                        <Image Source="pack://siteoforigin:,,,/Resources/coin_26px.png" Margin="3"></Image>
+                    </StackPanel>
+                    <Grid></Grid>
+                </DockPanel>
+            </Border>
+            <Views:BuyingItemView cal:Bind.Model="{Binding BuyingItemViewModel}" DockPanel.Dock="Top" HorizontalAlignment="Stretch" IsEnabled="{Binding IsBuying}" Style="{StaticResource BuyingInfoBar}" />
+            <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
+                <DataGrid VerticalScrollBarVisibility="Auto" ItemsSource="{Binding ShopStockList, Mode=TwoWay}" AutoGenerateColumns="False" HeadersVisibility="None" IsReadOnly="True" RowBackground="White" GridLinesVisibility="Horizontal">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Items" Width="*" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="False">
-                                        <Border Margin="5" DockPanel.Dock="Left" Width="48" Height="48" BorderBrush="White" BorderThickness="0,0,0,0">
-                                            <Image DockPanel.Dock="Left" Source="{Binding Path=Image, Converter={StaticResource imgConverter}, IsAsync=True}" Height="48" Width="48"/>
+                                        <Border Margin="10,5,2,2" DockPanel.Dock="Left" Width="32" Height="32" BorderBrush="White" BorderThickness="0,0,0,0">
+                                            <Image DockPanel.Dock="Left" Source="{Binding Path=Image, Converter={StaticResource imgConverter}, IsAsync=True}" Height="32" Width="32"/>
                                         </Border>
-                                        <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="5">
+                                        <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="2">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                                 <Label VerticalAlignment="Center" Content="{Binding DisplayCost}"/>
-                                                <Image Margin="3" Source="pack://siteoforigin:,,,/Resources/coin_orange_26px.png" />
+                                                <Image Margin="0,0,0,3" Source="pack://siteoforigin:,,,/Resources/coin_orange_26px.png" />
                                             </StackPanel>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                                 <Label Content="{Binding DisplayInStock}" Foreground="#FF777777"/>
                                             </StackPanel>
                                         </StackPanel>
-                                        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" Margin="5">
-                                            <Label Content="{Binding Name}" VerticalAlignment="Center" FontSize="24px" />
+                                        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" Margin="2">
+                                            <Label Content="{Binding Name}" VerticalAlignment="Stretch" FontSize="20px" Foreground="Black" />
                                         </StackPanel>
                                     </DockPanel>
                                 </DataTemplate>
@@ -118,8 +127,8 @@
                 </DataGrid>
             </DockPanel>
         </DockPanel>
-        
-        
+
+
 
 
 

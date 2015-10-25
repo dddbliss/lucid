@@ -12,31 +12,31 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="General_WaitDelayMin" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">3.0</Value>
     </Setting>
     <Setting Name="General_WaitDelayMax" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">5.0</Value>
     </Setting>
-    <Setting Name="General_PreHaggleMin" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="General_PreHaggleMin" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0.5</Value>
     </Setting>
-    <Setting Name="General_PreHaggleMax" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="General_PreHaggleMax" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0.7</Value>
     </Setting>
-    <Setting Name="General_OCRDelayMin" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="General_OCRDelayMin" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">1.0</Value>
     </Setting>
-    <Setting Name="General_OCRDelayMax" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="General_OCRDelayMax" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">1.4</Value>
     </Setting>
     <Setting Name="General_HagglePercent" Type="System.Decimal" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">5.2</Value>
     </Setting>
     <Setting Name="MS_ShopID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Web_UserAgent" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36</Value>
     </Setting>
     <Setting Name="Web_ProxyUri" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -46,6 +46,12 @@
     </Setting>
     <Setting Name="Web_ProxyPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Web_ProxyEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UI_Accent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Blue</Value>
     </Setting>
   </Settings>
 </SettingsFile>

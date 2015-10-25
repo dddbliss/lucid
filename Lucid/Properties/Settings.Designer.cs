@@ -61,7 +61,7 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3.0")]
         public decimal General_WaitDelayMin {
             get {
                 return ((decimal)(this["General_WaitDelayMin"]));
@@ -73,7 +73,7 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5.0")]
         public decimal General_WaitDelayMax {
             get {
                 return ((decimal)(this["General_WaitDelayMax"]));
@@ -85,10 +85,10 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string General_PreHaggleMin {
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public decimal General_PreHaggleMin {
             get {
-                return ((string)(this["General_PreHaggleMin"]));
+                return ((decimal)(this["General_PreHaggleMin"]));
             }
             set {
                 this["General_PreHaggleMin"] = value;
@@ -97,10 +97,10 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string General_PreHaggleMax {
+        [global::System.Configuration.DefaultSettingValueAttribute("0.7")]
+        public decimal General_PreHaggleMax {
             get {
-                return ((string)(this["General_PreHaggleMax"]));
+                return ((decimal)(this["General_PreHaggleMax"]));
             }
             set {
                 this["General_PreHaggleMax"] = value;
@@ -109,10 +109,10 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string General_OCRDelayMin {
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public decimal General_OCRDelayMin {
             get {
-                return ((string)(this["General_OCRDelayMin"]));
+                return ((decimal)(this["General_OCRDelayMin"]));
             }
             set {
                 this["General_OCRDelayMin"] = value;
@@ -121,10 +121,10 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string General_OCRDelayMax {
+        [global::System.Configuration.DefaultSettingValueAttribute("1.4")]
+        public decimal General_OCRDelayMax {
             get {
-                return ((string)(this["General_OCRDelayMax"]));
+                return ((decimal)(this["General_OCRDelayMax"]));
             }
             set {
                 this["General_OCRDelayMax"] = value;
@@ -133,7 +133,7 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5.2")]
         public decimal General_HagglePercent {
             get {
                 return ((decimal)(this["General_HagglePercent"]));
@@ -157,7 +157,8 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrom" +
+            "e/46.0.2490.71 Safari/537.36")]
         public string Web_UserAgent {
             get {
                 return ((string)(this["Web_UserAgent"]));
@@ -200,6 +201,30 @@ namespace Lucid.Properties {
             }
             set {
                 this["Web_ProxyPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Web_ProxyEnabled {
+            get {
+                return ((bool)(this["Web_ProxyEnabled"]));
+            }
+            set {
+                this["Web_ProxyEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
+        public string UI_Accent {
+            get {
+                return ((string)(this["UI_Accent"]));
+            }
+            set {
+                this["UI_Accent"] = value;
             }
         }
     }

@@ -8,9 +8,23 @@
         d:DataContext="{x:Type local:SettingView }"
         x:Class="Lucid.Views.SettingView"
         GlowBrush="{DynamicResource AccentColorBrush}"
-        mc:Ignorable="d" Height="498.659" Width="539.011" Title="Settings">
+        mc:Ignorable="d" Height="498.659" Width="539.011" Title="Settings" TitleCaps="False" Style="{DynamicResource CleanWindowStyleKey}" Loaded="MetroWindow_Loaded">
     <Grid Margin="0">
         <TabControl x:Name="tabControl" SelectedIndex="{Binding ActiveTabIndex}" Margin="10,10,10,50">
+            <TabItem Header="General">
+                <Grid>
+                    <StackPanel Margin="10,10,10,0" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10,10,5">
+                            <Image Width="32" Height="32" Source="pack://siteoforigin:,,,/Resources/stopwatch_32px.png" />
+                            <Label VerticalAlignment="Stretch" VerticalContentAlignment="Center" Content="User Interface" FontSize="18" />
+                        </StackPanel>
+                        <DockPanel LastChildFill="True" VerticalAlignment="top" Margin="10">
+                            <Label Content="Color Scheme" MinWidth="100"></Label>
+                            <ComboBox ItemsSource="{Binding AccentList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Source={StaticResource Settings}, Path=Default.UI_Accent}"></ComboBox>
+                        </DockPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
             <TabItem Header="User">
                 <StackPanel Margin="10,10,10,0" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10,10,5">
@@ -27,7 +41,7 @@
                     </DockPanel>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="General">
+            <TabItem Header="Settings">
                 <Grid>
                     <StackPanel Margin="10,10,10,0" VerticalAlignment="Top">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10,10,5">
@@ -74,7 +88,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Buying">
+            <TabItem Header="Shopping">
                 <Grid Margin="0,0,0,0">
                     <StackPanel Margin="10">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="top" Margin="10">
@@ -129,7 +143,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Web">
+            <TabItem Header="Proxy">
                 <StackPanel Margin="10,10,10,0" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="top" Margin="10,10,10,5">
                         <Image Width="32" Height="32" Source="pack://siteoforigin:,,,/Resources/globe_32px.png" />
@@ -147,21 +161,21 @@
 
                     <DockPanel Margin="10">
                         <Image Width="32" Height="32" DockPanel.Dock="Left" Source="pack://siteoforigin:,,,/Resources/web_shield_32px.png"/>
-                        <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" Content="Enable Web Proxy"></CheckBox>
+                        <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" Content="Enable Web Proxy" IsChecked="{Binding Source={StaticResource Settings}, Path=Default.Web_ProxyEnabled}"></CheckBox>
                         <Label VerticalAlignment="Center" Content="Web Proxy" FontSize="18"></Label>
                     </DockPanel>
                     <DockPanel LastChildFill="True" VerticalAlignment="top" Margin="5">
                         <Label Content="Web Proxy:"></Label>
-                        <TextBox ></TextBox>
+                        <TextBox Text="{Binding Source={StaticResource Settings}, Path=Default.Proxy_Uri}"></TextBox>
                     </DockPanel>
                     <StackPanel Orientation="Vertical" Margin="80,0,5,10">
                         <DockPanel Margin="5,5,0,5">
                             <Label Content="Proxy Username:" MinWidth="110"></Label>
-                            <TextBox HorizontalAlignment="Stretch"></TextBox>
+                            <TextBox Text="{Binding Source={StaticResource Settings}, Path=Default.Proxy_Username}" HorizontalAlignment="Stretch"></TextBox>
                         </DockPanel>
                         <DockPanel Margin="5,5,0,5">
                             <Label Content="Proxy Password:" MinWidth="110"></Label>
-                            <PasswordBox HorizontalAlignment="Stretch"></PasswordBox>
+                            <PasswordBox x:Name="txtProxyPassword" HorizontalAlignment="Stretch" PasswordChanged="txtProxyPassword_PasswordChanged"></PasswordBox>
                         </DockPanel>
                     </StackPanel>
 

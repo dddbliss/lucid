@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using MahApps.Metro;
 using NPLib;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +18,41 @@ namespace Lucid.ViewModels
         private ObservableCollection<string> _itemList = new ObservableCollection<string>();
         private string _addItemName = "";
 
+        public Dictionary<string, string> AccentList
+        {
+            get
+            {
+                return new Dictionary<string, string>()
+                {
+                    { "Red", "Red" },
+                    { "Green","Green" },
+                    { "Blue", "Blue" },
+                    { "Purple", "Purple" },
+                    { "Orange", "Orange" },
+                    { "Lime", "Lime" },
+                    { "Emerald", "Emerald" },
+                    { "Teal", "Teal" },
+                    { "Cyan", "Cyan" },
+                    { "Cobalt", "Cobalt" },
+                    { "Indigo", "Indigo" },
+                    { "Violet", "Violet" },
+                    { "Pink", "Pink" },
+                    { "Magenta", "Magenta" },
+                    { "Crimson", "Crimson" },
+                    { "Amber", "Amber" },
+                    { "Yellow", "Yellow" },
+                    { "Brown", "Brown" },
+                    { "Olive", "Olive" },
+                    { "Steel", "Steel" },
+                    { "Mauve", "Mauve" },
+                    { "Taupe", "Taupe" },
+                    { "Sienna", "Sienna" }
+                };
+            }
+        }
+
         public string Password { get; set; }
+        public string ProxyPassword { get; set; }
 
         public string AddItemName
         {
@@ -96,7 +131,13 @@ namespace Lucid.ViewModels
         public void Save()
         {
             Properties.Settings.Default.Login_Password = Password;
+            Properties.Settings.Default.Web_ProxyPassword = ProxyPassword;
             Properties.Settings.Default.Save();
+
+            ThemeManager.ChangeAppStyle(App.Current,
+                                       ThemeManager.GetAccent(Properties.Settings.Default.UI_Accent),
+                                       ThemeManager.GetAppTheme("BaseLight"));
+
             TryClose();
         }
 

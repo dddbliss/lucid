@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Lucid.ViewModels;
+using MahApps.Metro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -48,6 +49,10 @@ namespace Lucid
 
         protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
         {
+            ThemeManager.ChangeAppStyle(App.Current,
+                                    ThemeManager.GetAccent(Properties.Settings.Default.UI_Accent),
+                                    ThemeManager.GetAppTheme("BaseLight"));
+
             DisplayRootViewFor<AppViewModel>();
         }
     }

@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Lucid"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:Behaviours="http://metro.mahapps.com/winfx/xaml/shared"
+                    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:Converters="http://metro.mahapps.com/winfx/xaml/shared">
+
+    <sys:Double x:Key="WindowTitleFontSize">12</sys:Double>
+    <sys:Double x:Key="TabItemFontSize">16</sys:Double>
+
+    <FontFamily x:Key="HeaderFontFamily">Segoe UI Normal, Lucida Sans Unicode, Verdana</FontFamily>
+
+    <!--ACCENT COLORS-->
+
+    <Color x:Key="PrimaryText">#FF000000</Color>
+    <Color x:Key="SecondaryText">#FF673AB7</Color>
+    <Color x:Key="Divider">#FF673AB7</Color>
+
+    <Color x:Key="WindowTitleBackground">#FFFFFFFF</Color>
+    <Color x:Key="AccentColorDarker">#FF3F494E</Color>
+    <Color x:Key="AccentColorLight">#FF81929A</Color>
+
+    <!-- re-set brushes too -->
+   
+    <SolidColorBrush x:Key="AccentColorDarkerBrush" Color="{StaticResource AccentColorDarker}"/>
+    <SolidColorBrush x:Key="AccentColorLightBrush" Color="{StaticResource AccentColorLight}"/>
+
+    <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{StaticResource WindowTitleBackground}" />
+
+    <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{StaticResource AccentColor3}" />
+
+    <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+        <GradientStop Color="{StaticResource HighlightColor}" Offset="0" />
+        <GradientStop Color="{StaticResource AccentColor3}" Offset="1" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="CheckmarkFill" Color="{StaticResource AccentColor}" />
+    <SolidColorBrush x:Key="RightArrowFill" Color="{StaticResource AccentColor}" />
+
+    <Color x:Key="IdealForegroundColor">White</Color>
+    <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{StaticResource PrimaryText}"/>
+
+</ResourceDictionary>

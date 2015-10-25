@@ -1,0 +1,98 @@
+﻿<Controls:MetroWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:local="clr-namespace:Lucid.Views" 
+        d:DataContext="{x:Type local:LogView }"
+        x:Class="Lucid.Views.LogView"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        mc:Ignorable="d" Height="498.659" Width="539.011" Title="Logging" TitleCaps="False" Style="{DynamicResource CleanWindowStyleKey}">
+    <Grid>
+        <TabControl x:Name="tabControl" Margin="10">
+            <TabItem Header="Messages">
+                <Grid>
+                    <ListBox ItemsSource="{Binding Path=AllMessages, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel HorizontalAlignment="Stretch" LastChildFill="True" Margin="5">
+                                    <Image Tag="{Binding Level}" Width="20" Height="20" Margin="0,0,5,0" DockPanel.Dock="Left">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Style.Triggers>
+                                                    <DataTrigger  Binding="{Binding Level}" Value="Info">
+                                                        <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/info_25px.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger  Binding="{Binding Level}" Value="Warning">
+                                                        <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/warning_25px.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger  Binding="{Binding Level}" Value="Error">
+                                                        <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/error_25px.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger  Binding="{Binding Level}" Value="Success">
+                                                        <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/approval_25px.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger  Binding="{Binding Level}" Value="Failure">
+                                                        <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/failure_25px.png"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Foreground="#FF777777" Text="{Binding Date}" DockPanel.Dock="Right" />
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Message}"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Transactions">
+                <Grid>
+                    <DataGrid x:Name="dataGrid" ItemsSource="{Binding Path=AllTransactions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" AutoGenerateColumns="False" HeadersVisibility="None" IsReadOnly="True" RowBackground="White" GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Items" Width="*" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="False">
+                                            <Image Height="20" Width="20" Tag="{Binding WasSuccessful}" VerticalAlignment="Top" Margin="5" DockPanel.Dock="Left">
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding WasSuccessful}" Value="True">
+                                                                <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/approval_25px.png"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding WasSuccessful}" Value="False">
+                                                                <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/failure_25px.png"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                            <Border Margin="2,5,2,2" DockPanel.Dock="Left" Width="32" Height="32" BorderBrush="White" BorderThickness="0,0,0,0">
+                                                <Image DockPanel.Dock="Left" Source="{Binding Path=Image, Converter={StaticResource imgConverter}, IsAsync=True}" Height="32" Width="32"/>
+                                            </Border>
+                                            <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="2">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <Label VerticalAlignment="Center" Content="{Binding DisplayPrice}"/>
+                                                    <Image Margin="0,0,0,3" Source="pack://siteoforigin:,,,/Resources/coin_orange_26px.png" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <Label Content="{Binding Date}" Foreground="#FF777777"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" Margin="2">
+                                                <Label Content="{Binding Name}" VerticalAlignment="Stretch" FontSize="20px" Foreground="Black" />
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Controls:MetroWindow>

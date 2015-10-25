@@ -28,21 +28,7 @@ namespace Lucid
         private User _currentUser = new User() { is_authenticated = false };
         private bool _shopperIsActive = false, IsBusyCheckingShop = false;
 
-        private ObservableCollection<MainShopItem> _ShopStockList = new ObservableCollection<MainShopItem>()
-        {
-            {new MainShopItem()
-            {
-                Name = "Item 1",
-                Cost = 320,
-                InStock = 20
-            } },
-            { new MainShopItem()
-            {
-                Name = "Item 2",
-                Cost = 320,
-                InStock = 20
-            } }
-        };
+        private ObservableCollection<MainShopItem> _ShopStockList = new ObservableCollection<MainShopItem>() { };
 
         public ObservableCollection<MainShopItem> ShopStockList
         {
@@ -59,6 +45,18 @@ namespace Lucid
 
         public LogViewModel LogViewModel { get; set; }
         public SettingViewModel SettingsViewModel { get; set; }
+
+        public BuyingItemViewModel BuyingItemViewModel { get; set; }
+        private bool _isBuying = false;
+        public bool IsBuying
+        {
+            get { return _isBuying; }
+            set
+            {
+                _isBuying = value;
+                NotifyOfPropertyChange(() => IsBuying);
+            }
+        }
 
         public IWindowManager WinManager {
             get
@@ -138,10 +136,27 @@ namespace Lucid
 
             LogViewModel = new LogViewModel();
             SettingsViewModel = new SettingViewModel(_windowManager);
+            BuyingItemViewModel = new BuyingItemViewModel(_windowManager);
 
             // Setup NPLib.
             var _cm = ClientManager.Instance;
-            _cm.RegisterMessageAction(new Action<string>((message) =>
+
+            _cm.Settings = new ClientSettings()
+            {
+                GeneralWaitMax = Properties.Settings.Default.General_WaitDelayMax,
+                GeneralWaitMin = Properties.Settings.Default.General_WaitDelayMin,
+                OCRWaitMax = Properties.Settings.Default.General_OCRDelayMax,
+                OCRWaitMin = Properties.Settings.Default.General_OCRDelayMin,
+                PreHaggleWaitMax = Properties.Settings.Default.General_PreHaggleMax,
+                PreHaggleWaitMin = Properties.Settings.Default.General_PreHaggleMin,
+                UseProxy = Properties.Settings.Default.Web_ProxyEnabled,
+                ProxyUri = new Uri(string.IsNullOrEmpty(Properties.Settings.Default.Web_ProxyUri) ? "http://www.google.com" : Properties.Settings.Default.Web_ProxyUri),
+                ProxyUser = Properties.Settings.Default.Web_ProxyUsername,
+                ProxyPass = Properties.Settings.Default.Web_ProxyPassword,
+                UserAgent = Properties.Settings.Default.Web_UserAgent
+            };
+
+            _cm.RegisterMessageAction(new Action<LogMessage>((message) =>
             {
                 LogViewModel.Add(message);
             }));
@@ -171,17 +186,19 @@ namespace Lucid
             }));
         }
 
+        public void OpenLog()
+        {
+            Execute.OnUIThread(new System.Action(() =>
+            {
+                WinManager.ShowWindow(LogViewModel, null, new Dictionary<string, object>() { { "Title", (object)"Log Viewer" }, { "ResizeMode", (object)System.Windows.ResizeMode.NoResize } });
+            }));
+        }
+
         public void ManageShopper()
         {
 
 			ToggleShopperState();
-            if (ShopperIsActive)
-                LogViewModel.Add("Beginning to shop.");
-            else
-                LogViewModel.Add("All done shopping.");
-
-            
-
+ 
             Task t = Task.Run(() =>
             {
                 MainShopManager _msm = new MainShopManager();
@@ -192,31 +209,27 @@ namespace Lucid
                     {
                         if(!string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Username) && !string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Password))
                         {
-                            LogViewModel.Add("Attempting to log into Neopets.");
                             _um.Login(Properties.Settings.Default.Login_Username, Properties.Settings.Default.Login_Password, new Action<bool>((login) =>
                             {
                                 if(!login)
                                 {
                                     ShopperIsActive = false;
-                                    LogViewModel.Add("Could not log in to Neopets.");
                                 }
                                 else
                                 {
                                     CurrentUser = _um.CurrentUser;
-                                    LogViewModel.Add("Sucessfully completed log in into Neopets.");
-
+                                 
                                     if (SettingsViewModel.ItemList.Count <= 0)
                                     {
                                         OpenSettings(2);
 
-                                        LogViewModel.Add("Waiting for shopping list...");
+                                        LogViewModel.Add(new LogMessage() { Message = "Waiting for shopping list...", Level = LogLevel.Info, Date = DateTime.Now });
                                         while (SettingsViewModel.ItemList.Count <= 0)
                                         {
                                             Task.Delay(100);
                                         }
                                     }
 
-                                    LogViewModel.Add("Lets see what the shop has...");
                                     while (ShopperIsActive)
                                     {
                                         if (!_um.CurrentUser.is_authenticated)
@@ -229,12 +242,34 @@ namespace Lucid
 											{
 												IsBusyCheckingShop = true;
 												_msm.GetItemsInShop(Properties.Settings.Default.MS_ShopID, new Action<List<MainShopItem>>((item_list) =>
-												{
+                                                {
                                                     Execute.OnUIThread(new System.Action(() =>
                                                     {
                                                         ShopStockList = new ObservableCollection<MainShopItem>(item_list);
                                                     }));
-													
+
+                                                    // Check for matching items.
+                                                    if (!BuyingItemViewModel.IsBuying)
+                                                    { 
+                                                        var _buyItems = ShopStockList.Where(Item => SettingsViewModel.ItemList.Select(m => m.ToLower()).Contains(Item.Name.ToLower())).ToList();
+                                                        if (_buyItems.ToList().Count > 0)
+                                                        {
+                                                            var item = _buyItems.First();
+
+                                                            BuyingItemViewModel.Name = item.Name;
+                                                            BuyingItemViewModel.Image = item.Image;
+                                                            BuyingItemViewModel.Cost = item.Cost - Convert.ToInt32(item.Cost / Properties.Settings.Default.General_HagglePercent);
+
+                                                            NotifyOfPropertyChange(() => BuyingItemViewModel);
+
+                                                            BuyingItemViewModel.IsBuying = true;
+                                                            _msm.BuyItem(item, BuyingItemViewModel.Cost, new Action<MainShopTransaction>((trans) =>
+                                                            {
+                                                                LogViewModel.Add(trans);
+                                                                BuyingItemViewModel.IsBuying = false;
+                                                            }));
+                                                        }
+                                                    }											
 
 													IsBusyCheckingShop = false;
 												}));
@@ -242,8 +277,6 @@ namespace Lucid
                                         }
 
                                     }
-
-                                    LogViewModel.Add("All done shopping..");
                                 }
                             }));
                         }
@@ -251,7 +284,6 @@ namespace Lucid
                         {
                             OpenSettings(0);
 
-                            LogViewModel.Add("Waiting for authentication to be configured.");
                             while(!string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Username) && !string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Password))
                             {
                                 Task.Delay(100).Wait();

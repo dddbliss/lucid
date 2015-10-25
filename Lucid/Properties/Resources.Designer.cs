@@ -63,6 +63,16 @@ namespace Lucid.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap approval_25px {
+            get {
+                object obj = ResourceManager.GetObject("approval_25px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cancel_32px {
             get {
                 object obj = ResourceManager.GetObject("cancel_32px", resourceCulture);
@@ -113,9 +123,49 @@ namespace Lucid.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap error_25px {
+            get {
+                object obj = ResourceManager.GetObject("error_25px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap failure_25px {
+            get {
+                object obj = ResourceManager.GetObject("failure_25px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap globe_32px {
             get {
                 object obj = ResourceManager.GetObject("globe_32px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap info_25px {
+            get {
+                object obj = ResourceManager.GetObject("info_25px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap info_squared_26px {
+            get {
+                object obj = ResourceManager.GetObject("info_squared_26px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -146,6 +196,26 @@ namespace Lucid.Properties {
         internal static System.Drawing.Bitmap ingredients_list_32px {
             get {
                 object obj = ResourceManager.GetObject("ingredients_list_32px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Kyo_Tux_Basket_Basket_empty {
+            get {
+                object obj = ResourceManager.GetObject("Kyo_Tux_Basket_Basket_empty", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap log_25px {
+            get {
+                object obj = ResourceManager.GetObject("log_25px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -256,6 +326,16 @@ namespace Lucid.Properties {
         internal static System.Drawing.Bitmap user_26px {
             get {
                 object obj = ResourceManager.GetObject("user_26px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap warning_25px {
+            get {
+                object obj = ResourceManager.GetObject("warning_25px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
