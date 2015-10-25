@@ -8,7 +8,7 @@
         d:DataContext="{x:Type local:SettingView }"
         x:Class="Lucid.Views.SettingView"
         GlowBrush="{DynamicResource AccentColorBrush}"
-        mc:Ignorable="d" Height="498.659" Width="539.011" Title="Settings" TitleCaps="False" Style="{DynamicResource CleanWindowStyleKey}" Loaded="MetroWindow_Loaded">
+        mc:Ignorable="d" Height="514.659" Width="539.011" Title="Settings" TitleCaps="False" Style="{DynamicResource CleanWindowStyleKey}" Loaded="MetroWindow_Loaded">
     <Grid Margin="0">
         <TabControl x:Name="tabControl" SelectedIndex="{Binding ActiveTabIndex}" Margin="10,10,10,50">
             <TabItem Header="General">
@@ -84,6 +84,16 @@
                             <Label Content="Haggle for"/>
                             <Controls:NumericUpDown MinWidth="50" Minimum="0" Maximum="100" Value="{Binding Source={StaticResource Settings}, Path=Default.General_HagglePercent}" HideUpDownButtons="True"/>
                             <Label Content="% percent."/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10" MaxWidth="660" VerticalAlignment="Stretch">
+                            <Label Content="Attempt to haggle for"/>
+                            <Controls:NumericUpDown MinWidth="50" Minimum="0" Maximum="100" Value="{Binding Source={StaticResource Settings}, Path=Default.General_HaggleAttempts}" HideUpDownButtons="True"/>
+                            <Label Content="times before giving up."/> 
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10" MaxWidth="660" VerticalAlignment="Stretch">
+                            <Label Content="Reduce offer by an additonal "/>
+                            <Controls:NumericUpDown MinWidth="50" Minimum="0" Maximum="100" Value="{Binding Source={StaticResource Settings}, Path=Default.General_HaggleAttemptPercent}" HideUpDownButtons="True"/>
+                            <Label Content="% per attempt."/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>

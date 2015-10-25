@@ -227,5 +227,29 @@ namespace Lucid.Properties {
                 this["UI_Accent"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int General_HaggleAttempts {
+            get {
+                return ((int)(this["General_HaggleAttempts"]));
+            }
+            set {
+                this["General_HaggleAttempts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public decimal General_HaggleAttemptPercent {
+            get {
+                return ((decimal)(this["General_HaggleAttemptPercent"]));
+            }
+            set {
+                this["General_HaggleAttemptPercent"] = value;
+            }
+        }
     }
 }

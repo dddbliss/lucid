@@ -238,7 +238,7 @@ namespace Lucid
                                         }
                                         else
                                         {
-											if (!IsBusyCheckingShop)
+											if (!IsBusyCheckingShop && !BuyingItemViewModel.IsBuying)
 											{
 												IsBusyCheckingShop = true;
 												_msm.GetItemsInShop(Properties.Settings.Default.MS_ShopID, new Action<List<MainShopItem>>((item_list) =>
@@ -258,12 +258,12 @@ namespace Lucid
 
                                                             BuyingItemViewModel.Name = item.Name;
                                                             BuyingItemViewModel.Image = item.Image;
-                                                            BuyingItemViewModel.Cost = item.Cost - Convert.ToInt32(item.Cost / Properties.Settings.Default.General_HagglePercent);
+                                                            BuyingItemViewModel.Cost = item.Cost - Convert.ToInt32(item.Cost / (Properties.Settings.Default.General_HagglePercent));
 
                                                             NotifyOfPropertyChange(() => BuyingItemViewModel);
 
                                                             BuyingItemViewModel.IsBuying = true;
-                                                            _msm.BuyItem(item, BuyingItemViewModel.Cost, new Action<MainShopTransaction>((trans) =>
+                                                            _msm.BuyItem(item, BuyingItemViewModel.Cost, Properties.Settings.Default.General_HagglePercent, Properties.Settings.Default.General_HaggleAttempts, Properties.Settings.Default.General_HaggleAttemptPercent, new Action<MainShopTransaction>((trans) =>
                                                             {
                                                                 LogViewModel.Add(trans);
                                                                 BuyingItemViewModel.IsBuying = false;
