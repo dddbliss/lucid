@@ -221,7 +221,7 @@ namespace Lucid
                                  
                                     if (SettingsViewModel.ItemList.Count <= 0)
                                     {
-                                        OpenSettings(2);
+                                        OpenSettings(3);
 
                                         LogViewModel.Add(new LogMessage() { Message = "Waiting for shopping list...", Level = LogLevel.Info, Date = DateTime.Now });
                                         while (SettingsViewModel.ItemList.Count <= 0)

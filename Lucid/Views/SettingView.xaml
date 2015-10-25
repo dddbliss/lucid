@@ -15,7 +15,7 @@
                 <Grid>
                     <StackPanel Margin="10,10,10,0" VerticalAlignment="Top">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10,10,5">
-                            <Image Width="32" Height="32" Source="pack://siteoforigin:,,,/Resources/stopwatch_32px.png" />
+                            <Image Width="32" Height="32" Source="pack://siteoforigin:,,,/Resources/change_theme_32px.png" />
                             <Label VerticalAlignment="Stretch" VerticalContentAlignment="Center" Content="User Interface" FontSize="18" />
                         </StackPanel>
                         <DockPanel LastChildFill="True" VerticalAlignment="top" Margin="10">

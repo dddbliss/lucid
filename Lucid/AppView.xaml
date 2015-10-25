@@ -39,7 +39,7 @@
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <cal:ActionMessage MethodName="OpenSettings">
-                                    <cal:Parameter Value="1"/>
+                                    <cal:Parameter Value="3"/>
                                 </cal:ActionMessage>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>

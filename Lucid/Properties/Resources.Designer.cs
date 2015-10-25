@@ -83,6 +83,16 @@ namespace Lucid.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap change_theme_32px {
+            get {
+                object obj = ResourceManager.GetObject("change_theme_32px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap close_window_25px {
             get {
                 object obj = ResourceManager.GetObject("close_window_25px", resourceCulture);
