@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -18,7 +19,7 @@ using System.Windows.Media.Imaging;
 namespace Lucid
 {
     [Export(typeof(AppViewModel))]
-    class AppViewModel : PropertyChangedBase
+    class AppViewModel : Screen
     {
         private const string WindowTitleDefault = "Lucid MSAB(a)";
         private string _windowTitle = WindowTitleDefault;
@@ -90,19 +91,6 @@ namespace Lucid
             }
         }
 
-        public ImageSource ManageShopperImage
-        {
-            get
-            {
-                return _shopperImageSource;
-            }
-            set
-            {
-                _shopperImageSource = value;
-                NotifyOfPropertyChange(() => ManageShopperImage);
-            }
-        }
-
         public bool ShopperIsActive
         {
             get
@@ -112,18 +100,7 @@ namespace Lucid
             set
             {
                 _shopperIsActive = value;
-
-                if (!value)
-                {
-                    ManageShopperImage = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/play_round_32px.png"));
-                }
-                else
-                {
-                    ManageShopperImage = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/cancel_32px.png"));
-                }
-
                 NotifyOfPropertyChange(() => ShopperIsActive);
-                NotifyOfPropertyChange(() => ManageShopperImage);
             }
         }
 
@@ -182,7 +159,7 @@ namespace Lucid
             Execute.OnUIThread(new System.Action(() =>
             {
                 SettingsViewModel.ActiveTabIndex = TabIndex;
-                WinManager.ShowWindow(SettingsViewModel, null, new Dictionary<string, object>() { { "Title", (object)"Settings" }, { "ResizeMode", (object)System.Windows.ResizeMode.NoResize } });
+                WinManager.ShowDialog(SettingsViewModel, null, new Dictionary<string, object>() { { "Title", (object)"Settings" }, { "ResizeMode", (object)System.Windows.ResizeMode.NoResize } });
             }));
         }
 
@@ -190,7 +167,7 @@ namespace Lucid
         {
             Execute.OnUIThread(new System.Action(() =>
             {
-                WinManager.ShowWindow(LogViewModel, null, new Dictionary<string, object>() { { "Title", (object)"Log Viewer" }, { "ResizeMode", (object)System.Windows.ResizeMode.NoResize } });
+                WinManager.ShowDialog(LogViewModel, null, new Dictionary<string, object>() { { "Title", (object)"Log Viewer" }, { "ResizeMode", (object)System.Windows.ResizeMode.NoResize } });
             }));
         }
 
@@ -201,95 +178,118 @@ namespace Lucid
  
             Task t = Task.Run(() =>
             {
-                MainShopManager _msm = new MainShopManager();
-                UserManager _um = new UserManager();
-                if(ShopperIsActive)
+                try
                 {
-                    if(!_um.CurrentUser.is_authenticated)
+                    MainShopManager _msm = new MainShopManager();
+                    UserManager _um = new UserManager();
+                    if (ShopperIsActive)
                     {
-                        if(!string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Username) && !string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Password))
+                        if (!_um.CurrentUser.is_authenticated)
                         {
-                            _um.Login(Properties.Settings.Default.Login_Username, Properties.Settings.Default.Login_Password, new Action<bool>((login) =>
+                            if (!string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Username) && !string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Password))
                             {
-                                if(!login)
+                                _um.Login(Properties.Settings.Default.Login_Username, Properties.Settings.Default.Login_Password, new Action<bool>((login) =>
                                 {
-                                    ShopperIsActive = false;
-                                }
-                                else
-                                {
-                                    CurrentUser = _um.CurrentUser;
-                                 
-                                    if (SettingsViewModel.ItemList.Count <= 0)
-                                    {
-                                        OpenSettings(3);
-
-                                        LogViewModel.Add(new LogMessage() { Message = "Waiting for shopping list...", Level = LogLevel.Info, Date = DateTime.Now });
-                                        while (SettingsViewModel.ItemList.Count <= 0)
+                                    try {
+                                        if (!login)
                                         {
-                                            Task.Delay(100);
-                                        }
-                                    }
-
-                                    while (ShopperIsActive)
-                                    {
-                                        if (!_um.CurrentUser.is_authenticated)
-                                        {
-                                            // Not logged in.
+                                            ShopperIsActive = false;
                                         }
                                         else
                                         {
-											if (!IsBusyCheckingShop && !BuyingItemViewModel.IsBuying)
-											{
-												IsBusyCheckingShop = true;
-												_msm.GetItemsInShop(Properties.Settings.Default.MS_ShopID, new Action<List<MainShopItem>>((item_list) =>
+                                            CurrentUser = _um.CurrentUser;
+
+                                            if (SettingsViewModel.ItemList.Count <= 0)
+                                            {
+                                                OpenSettings(3);
+
+                                                LogViewModel.Add(new LogMessage() { Message = "Waiting for shopping list...", Level = LogLevel.Info, Date = DateTime.Now });
+                                                while (SettingsViewModel.ItemList.Count <= 0)
                                                 {
-                                                    Execute.OnUIThread(new System.Action(() =>
+                                                    Task.Delay(100);
+                                                }
+                                            }
+
+                                            while (ShopperIsActive)
+                                            {
+                                                if (!_um.CurrentUser.is_authenticated)
+                                                {
+                                                    // Not logged in.
+                                                }
+                                                else
+                                                {
+                                                    if (!IsBusyCheckingShop && !BuyingItemViewModel.IsBuying)
                                                     {
-                                                        ShopStockList = new ObservableCollection<MainShopItem>(item_list);
-                                                    }));
-
-                                                    // Check for matching items.
-                                                    if (!BuyingItemViewModel.IsBuying)
-                                                    { 
-                                                        var _buyItems = ShopStockList.Where(Item => SettingsViewModel.ItemList.Select(m => m.ToLower()).Contains(Item.Name.ToLower())).ToList();
-                                                        if (_buyItems.ToList().Count > 0)
+                                                        IsBusyCheckingShop = true;
+                                                        _msm.GetItemsInShop(Properties.Settings.Default.MS_ShopID, new Action<List<MainShopItem>>((item_list) =>
                                                         {
-                                                            var item = _buyItems.First();
+                                                            try {
+                                                                Execute.OnUIThread(new System.Action(() =>
+                                                                {
+                                                                    ShopStockList = new ObservableCollection<MainShopItem>(item_list);
+                                                                }));
 
-                                                            BuyingItemViewModel.Name = item.Name;
-                                                            BuyingItemViewModel.Image = item.Image;
-                                                            BuyingItemViewModel.Cost = item.Cost - Convert.ToInt32(item.Cost / (Properties.Settings.Default.General_HagglePercent));
+                                                            // Check for matching items.
+                                                            if (!BuyingItemViewModel.IsBuying)
+                                                                {
+                                                                    var _buyItems = ShopStockList.Where(Item => SettingsViewModel.ItemList.Select(m => m.ToLower()).Contains(Item.Name.ToLower())).ToList();
+                                                                    if (_buyItems.ToList().Count > 0)
+                                                                    {
+                                                                        var item = _buyItems.First();
 
-                                                            NotifyOfPropertyChange(() => BuyingItemViewModel);
+                                                                        BuyingItemViewModel.Name = item.Name;
+                                                                        BuyingItemViewModel.Image = item.Image;
+                                                                        BuyingItemViewModel.Cost = item.Cost - Convert.ToInt32(item.Cost / (Properties.Settings.Default.General_HagglePercent));
 
-                                                            BuyingItemViewModel.IsBuying = true;
-                                                            _msm.BuyItem(item, BuyingItemViewModel.Cost, Properties.Settings.Default.General_HagglePercent, Properties.Settings.Default.General_HaggleAttempts, Properties.Settings.Default.General_HaggleAttemptPercent, new Action<MainShopTransaction>((trans) =>
+                                                                        NotifyOfPropertyChange(() => BuyingItemViewModel);
+
+                                                                        BuyingItemViewModel.IsBuying = true;
+                                                                        _msm.BuyItem(item, BuyingItemViewModel.Cost, Properties.Settings.Default.General_HagglePercent, Properties.Settings.Default.General_HaggleAttempts, Properties.Settings.Default.General_HaggleAttemptPercent, new Action<MainShopTransaction>((trans) =>
+                                                                        {
+                                                                            LogViewModel.Add(trans);
+                                                                            BuyingItemViewModel.IsBuying = false;
+                                                                        }));
+                                                                    }
+                                                                }
+                                                                IsBusyCheckingShop = false;
+                                                            }
+                                                            catch (Exception ex)
                                                             {
-                                                                LogViewModel.Add(trans);
-                                                                BuyingItemViewModel.IsBuying = false;
-                                                            }));
-                                                        }
-                                                    }											
+                                                                ex.ReportException();
+                                                                ShopperIsActive = false;
+                                                            }
 
-													IsBusyCheckingShop = false;
-												}));
-											}
+
+                                                        }));
+                                                    }
+                                                }
+
+                                            }
                                         }
-
                                     }
-                                }
-                            }));
-                        }
-                        else
-                        {
-                            OpenSettings(0);
-
-                            while(!string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Username) && !string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Password))
+                                    catch(Exception ex)
+                                    {
+                                        ex.ReportException();
+                                        ShopperIsActive = false;
+                                    }
+                                }));
+                            }
+                            else
                             {
-                                Task.Delay(100).Wait();
+                                OpenSettings(0);
+
+                                while (!string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Username) && !string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Password))
+                                {
+                                    Task.Delay(100).Wait();
+                                }
                             }
                         }
-                    } 
+                    }
+                }
+                catch(Exception ex)
+                {
+                    ex.ReportException();
+                    ShopperIsActive = false;
                 }
             });           
 

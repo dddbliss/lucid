@@ -107,7 +107,7 @@
                         </StackPanel>
                         <DockPanel HorizontalAlignment="Stretch" Margin="10">
                             <Label Content="Shop to autobuy in" />
-                            <ComboBox DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding ShopList}" SelectedValue="{Binding Source={StaticResource Settings}, Path=Default.MS_ShopID}" SelectedIndex="0" />
+                            <ComboBox DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding ShopList}" SelectedValue="{Binding Source={StaticResource Settings}, Path=Default.MS_ShopID}" />
                         </DockPanel>
                         
                         <Border Height="1" VerticalAlignment="Center" OpacityMask="White" BorderThickness="0,0,0,1">
@@ -161,7 +161,7 @@
                     </StackPanel>
                     <DockPanel LastChildFill="True" VerticalAlignment="top" Margin="5">
                         <Label Content="User Agent should be"></Label>
-                        <TextBox Text=""></TextBox>
+                        <TextBox Text="{Binding Source={StaticResource Settings}, Path=Default.Web_UserAgent}"></TextBox>
                     </DockPanel>
                     <Border Height="1" VerticalAlignment="Center" Margin="5,5,0,5" OpacityMask="White" BorderThickness="0,0,0,1">
                         <Border.BorderBrush>

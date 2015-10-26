@@ -26,7 +26,20 @@
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button HorizontalAlignment="Right" Padding="10" Width="45" Style="{StaticResource FlatButtonStyle}">
-                        <Image Source="{Binding ManageShopperImage, UpdateSourceTrigger=PropertyChanged}" Margin="10" Width="25" Height="25"></Image>
+                        <Image Tag="{Binding ShopperIsActive}" Margin="10" Width="25" Height="25">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ShopperIsActive}" Value="True">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/cancel_32px.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ShopperIsActive}" Value="False">
+                                            <Setter Property="Source" Value="pack://siteoforigin:,,,/Resources/play_round_32px.png"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <cal:ActionMessage MethodName="ManageShopper" />
