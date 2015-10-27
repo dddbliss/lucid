@@ -18,8 +18,8 @@ using System.Windows.Media.Imaging;
 
 namespace Lucid
 {
-    [Export(typeof(AppViewModel))]
-    class AppViewModel : Screen
+    [Export(typeof(IShell))]
+    class AppViewModel : PropertyChangedBase, IShell
     {
         private const string WindowTitleDefault = "Lucid MSAB(a)";
         private string _windowTitle = WindowTitleDefault;
@@ -111,7 +111,7 @@ namespace Lucid
         {
             _windowManager = windowManager;
 
-            LogViewModel = new LogViewModel();
+            LogViewModel = new LogViewModel(_windowManager);
             SettingsViewModel = new SettingViewModel(_windowManager);
             BuyingItemViewModel = new BuyingItemViewModel(_windowManager);
 
@@ -278,10 +278,7 @@ namespace Lucid
                             {
                                 OpenSettings(0);
 
-                                while (!string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Username) && !string.IsNullOrWhiteSpace(Properties.Settings.Default.Login_Password))
-                                {
-                                    Task.Delay(100).Wait();
-                                }
+                                ShopperIsActive = false;
                             }
                         }
                     }

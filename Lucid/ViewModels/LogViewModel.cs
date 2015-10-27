@@ -16,6 +16,12 @@ namespace Lucid.ViewModels
         private ObservableCollection<LogMessage> _log = new ObservableCollection<LogMessage>();
         private ObservableCollection<MainShopTransaction> _trans = new ObservableCollection<MainShopTransaction>();
 
+        [ImportingConstructor]
+        public LogViewModel(IWindowManager windowManager)
+        {
+
+        }
+
         public LogMessage LastMessage
         {
             get

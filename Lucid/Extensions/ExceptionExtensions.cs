@@ -13,7 +13,10 @@ namespace Lucid
     {
         public static void ReportException(this Exception @this)
         {
-            string fileName = string.Format("Exception_{0}.txt", DateTime.Now.ToString("yyyy_dd_MM_hh_mm_ss"));
+            if (!Directory.Exists(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData) + "\\Lucid"))
+                Directory.CreateDirectory(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData) + "\\Lucid");
+
+            string fileName = string.Format(System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData) + "\\Lucid\\Exception_{0}.txt", DateTime.Now.ToString("yyyy_dd_MM_hh_mm_ss"));
             using (var fo = new StreamWriter(fileName))
             {
                 fo.WriteLine(DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString());
@@ -25,7 +28,7 @@ namespace Lucid
             };
 
             MessageBox.Show(string.Format("Lucid has reported a fatal error.\r\nThe file '{0}' has been generated for reporting.\r\n\r\nWe have stopped shopping for now.", fileName), "Fatal Error");
-            ClientManager.Instance.SendMessage("Stopped shopping due to fatal error.", NPLib.Models.LogLevel.Error);
+            //ClientManager.Instance.SendMessage("Stopped shopping due to fatal error.", NPLib.Models.LogLevel.Error);
         }
     }
 }

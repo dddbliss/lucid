@@ -16,7 +16,14 @@ namespace Lucid
         public App()
         {
             InitializeComponent();
+
+            App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
         }
-        
+
+        private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Exception.ReportException();
+            App.Current.Shutdown();
+        }
     }
 }
