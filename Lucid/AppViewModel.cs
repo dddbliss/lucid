@@ -178,8 +178,6 @@ namespace Lucid
  
             Task t = Task.Run(() =>
             {
-                try
-                {
                     MainShopManager _msm = new MainShopManager();
                     UserManager _um = new UserManager();
                     if (ShopperIsActive)
@@ -190,7 +188,7 @@ namespace Lucid
                             {
                                 _um.Login(Properties.Settings.Default.Login_Username, Properties.Settings.Default.Login_Password, new Action<bool>((login) =>
                                 {
-                                    try {
+
                                         if (!login)
                                         {
                                             ShopperIsActive = false;
@@ -199,11 +197,22 @@ namespace Lucid
                                         {
                                             CurrentUser = _um.CurrentUser;
 
+                                            if (Properties.Settings.Default.MS_ShopID == 0)
+                                            {
+                                                OpenSettings(3);
+
+                                                LogViewModel.Add(new LogMessage() { Message = "Waiting for shop selection...", Level = LogLevel.Info, Date = DateTime.Now });
+                                                while (Properties.Settings.Default.MS_ShopID == 0)
+                                                {
+                                                    Task.Delay(100);
+                                                }
+                                            }
+
                                             if (SettingsViewModel.ItemList.Count <= 0)
                                             {
                                                 OpenSettings(3);
 
-                                                LogViewModel.Add(new LogMessage() { Message = "Waiting for shopping list...", Level = LogLevel.Info, Date = DateTime.Now });
+                                                LogViewModel.Add(new LogMessage() { Message = "Waiting for shop and shopping list...", Level = LogLevel.Info, Date = DateTime.Now });
                                                 while (SettingsViewModel.ItemList.Count <= 0)
                                                 {
                                                     Task.Delay(100);
@@ -221,13 +230,20 @@ namespace Lucid
                                                     if (!IsBusyCheckingShop && !BuyingItemViewModel.IsBuying)
                                                     {
                                                         IsBusyCheckingShop = true;
+
+                                                        if (Properties.Settings.Default.MS_ShopID == 0)
+                                                        {
+                                                            Properties.Settings.Default.MS_ShopID = 1;
+                                                            Properties.Settings.Default.Save();
+                                                        }
+
                                                         _msm.GetItemsInShop(Properties.Settings.Default.MS_ShopID, new Action<List<MainShopItem>>((item_list) =>
                                                         {
-                                                            try {
-                                                                Execute.OnUIThread(new System.Action(() =>
-                                                                {
-                                                                    ShopStockList = new ObservableCollection<MainShopItem>(item_list);
-                                                                }));
+
+                                                            Execute.OnUIThread(new System.Action(() =>
+                                                            {
+                                                                ShopStockList = new ObservableCollection<MainShopItem>(item_list);
+                                                            }));
 
                                                             // Check for matching items.
                                                             if (!BuyingItemViewModel.IsBuying)
@@ -252,12 +268,7 @@ namespace Lucid
                                                                     }
                                                                 }
                                                                 IsBusyCheckingShop = false;
-                                                            }
-                                                            catch (Exception ex)
-                                                            {
-                                                                ex.ReportException();
-                                                                ShopperIsActive = false;
-                                                            }
+
 
 
                                                         }));
@@ -266,12 +277,7 @@ namespace Lucid
 
                                             }
                                         }
-                                    }
-                                    catch(Exception ex)
-                                    {
-                                        ex.ReportException();
-                                        ShopperIsActive = false;
-                                    }
+                                    
                                 }));
                             }
                             else
@@ -282,12 +288,7 @@ namespace Lucid
                             }
                         }
                     }
-                }
-                catch(Exception ex)
-                {
-                    ex.ReportException();
-                    ShopperIsActive = false;
-                }
+
             });           
 
             

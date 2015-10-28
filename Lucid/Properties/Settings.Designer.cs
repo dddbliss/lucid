@@ -145,7 +145,7 @@ namespace Lucid.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int MS_ShopID {
             get {
                 return ((int)(this["MS_ShopID"]));
@@ -249,6 +249,18 @@ namespace Lucid.Properties {
             }
             set {
                 this["General_HaggleAttemptPercent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpgradeMe {
+            get {
+                return ((bool)(this["UpgradeMe"]));
+            }
+            set {
+                this["UpgradeMe"] = value;
             }
         }
     }

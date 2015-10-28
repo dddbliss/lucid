@@ -61,6 +61,14 @@ namespace Lucid
 
         protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
         {
+            if (Properties.Settings.Default.UpgradeMe)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.MS_ShopID = 1;
+                Properties.Settings.Default.UpgradeMe = false;
+                Properties.Settings.Default.Save();
+            }
+
             ThemeManager.ChangeAppStyle(App.Current,
                                     ThemeManager.GetAccent(Properties.Settings.Default.UI_Accent),
                                     ThemeManager.GetAppTheme("BaseLight"));
