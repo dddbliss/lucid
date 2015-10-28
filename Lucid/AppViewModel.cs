@@ -204,7 +204,7 @@ namespace Lucid
                                                 LogViewModel.Add(new LogMessage() { Message = "Waiting for shop selection...", Level = LogLevel.Info, Date = DateTime.Now });
                                                 while (Properties.Settings.Default.MS_ShopID == 0)
                                                 {
-                                                    Task.Delay(100);
+                                                    Thread.Sleep(100);
                                                 }
                                             }
 
@@ -215,7 +215,7 @@ namespace Lucid
                                                 LogViewModel.Add(new LogMessage() { Message = "Waiting for shop and shopping list...", Level = LogLevel.Info, Date = DateTime.Now });
                                                 while (SettingsViewModel.ItemList.Count <= 0)
                                                 {
-                                                    Task.Delay(100);
+                                                    Thread.Sleep(100);
                                                 }
                                             }
 
