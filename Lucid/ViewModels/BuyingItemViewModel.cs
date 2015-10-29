@@ -64,6 +64,7 @@ namespace Lucid.ViewModels
             {
                 _cost = value;
                 NotifyOfPropertyChange(() => Cost);
+                NotifyOfPropertyChange(() => DisplayCost);
             }
         }
 
@@ -71,7 +72,7 @@ namespace Lucid.ViewModels
         {
             get
             {
-                return Cost.ToString("N0") + " NP";
+                return string.Format("{0:n0}", _cost) + " NP";
             }
         }
     }
